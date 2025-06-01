@@ -297,7 +297,7 @@ namespace TimeTable_Project
         public static List<Vacation> GetAllVacations()
 
         {
-            string query = "SELECT staff.surname as Surname,staff.name as Name,vacations.staff_table_number, vacations.date_start,vacations.date_end,vacations.days  FROM public.vacations as vacations\r\ninner join public.staff as staff on vacations.staff_table_number=staff.table_number\r\nwhere vacations.planned=true and vacations.cancelled=false and vacations.date_start>date_trunc('year', now())\r\nORDER BY staff_table_number, date_start ASC ";
+            string query = "SELECT staff.surname as Surname,staff.name as Name,vacations.staff_table_number, vacations.date_start,vacations.date_end,vacations.days  FROM public.vacations as vacations\r\ninner join public.staff as staff on vacations.staff_table_number=staff.table_number\r\nwhere vacations.planned=true and vacations.cancelled=false and vacations.date_start>date_trunc('year', now())\r\nORDER BY surname, date_start ASC ";
 
 
             using (var connect = new NpgsqlConnection(Config.SQLConnectionString))

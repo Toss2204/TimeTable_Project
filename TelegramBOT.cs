@@ -184,7 +184,7 @@ namespace TimeTable_Project
                                                     "\n /Office - В офисе" +
                                                     "\n /RemoteWork - На удаленке" +
                                                     "\n /Vacation - В oтпуске oфициально" +
-                                                    "\n /Family - Отсутсвую по семейным обстоятельствам" +
+                                                    "\n /Family - Отсутствую по семейным обстоятельствам" +
                                                     "\n /Medical - На больничном" +
                                                     "\n /BusinessTrip - В командировке" +
                                                     "\n /OnStudy - На учебе";
@@ -1584,7 +1584,7 @@ namespace TimeTable_Project
             string textAnswer = "Для создания новой заявки на отпуск укажите тип отпуска:" +
                                                     "\n /RemoteWork - На удаленке" +
                                                     "\n /Vacation - В oтпуске oфициально" +
-                                                    "\n /Family - Отсутсвую по семейным обстоятельствам" +
+                                                    "\n /Family - Отсутствую по семейным обстоятельствам" +
                                                     "\n /Medical - На больничном" +
                                                     "\n /BusinessTrip - В командировке" +
                                                     "\n /OnStudy - На учебе";
