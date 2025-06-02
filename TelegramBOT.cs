@@ -861,7 +861,7 @@ namespace TimeTable_Project
                                                 }
                                                 else if (lastBotCommand.Type == Bot_command_types.enter_reason_of_cancell_request)
                                                 {
-                                                    await HandleEnterReasonOfCancellRequest(botClient, message, TelegramId);
+                                                    await HandleEnterReasonOfCancellRequest(botClient, message, TelegramId, message.Text);
 
                                                     await HandlerRequestsAgreement(botClient, message, TelegramId);
                                                 }
@@ -980,7 +980,7 @@ namespace TimeTable_Project
 
         }
 
-        private async Task HandleEnterReasonOfCancellRequest(ITelegramBotClient botClient, Message message, long telegramId)
+        private async Task HandleEnterReasonOfCancellRequest(ITelegramBotClient botClient, Message message, long telegramId, string reason="не указана")
         {
             var currentRequest = requestsHolderForAgreement[telegramId];
             if (currentRequest != null)
@@ -988,7 +988,7 @@ namespace TimeTable_Project
                 string textAnswer = $"В Вашей заявке отказано. " +
                     $"\n {currentRequest.VacationTypeString}" +
                     $"\n Даты: {currentRequest.date_start.GetValueOrDefault().ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)} - {currentRequest.date_end.GetValueOrDefault().ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}" +
-                    $"\n Причина: не указана";
+                    $"\n Причина: {reason}";
                 var staffPerson = StaffList.GetStaffPerson($"table_number={currentRequest.staff_table_number}");
 
                 if (staffPerson != null)
