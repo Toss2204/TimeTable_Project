@@ -1199,8 +1199,7 @@ namespace TimeTable_Project
                 {
 
                     var staffListForNotification = StaffList.GetStaffIfNotificationIsNecessary();
-                    if (staffListForNotification.Count == 0) { return; }
-
+                    
                     string newText = "Если Вы сегодня не в офисе, введите свой статус, пожалуйста";
 
                     Console.WriteLine($"{DateTime.Now.ToString("dd.MM.yyy HH:mm:ss", CultureInfo.InvariantCulture)} Отправляю напоминание особым пользователям для ввода своего сегодняшнего статуса");
