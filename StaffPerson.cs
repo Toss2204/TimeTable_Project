@@ -10,6 +10,7 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Telegram.BotBuilder.Extensions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static TimeTable_Project.Program;
 
 namespace TimeTable_Project
@@ -25,7 +26,8 @@ namespace TimeTable_Project
         public long? telegram_id { get; set; }
         public bool? reminder_is_necessary { get; set; }
         public DateTime? date_remind { get; set; }
-    
+        public DateTime? Birthday { get; set; }
+
 
         public bool AuthenticationIsComplited() 
         {
@@ -141,7 +143,7 @@ namespace TimeTable_Project
 
         }
 
-        public Vacation? UpdateStatus(int vacationTypeId)
+        public Vacation? UpdateStatus(int vacationTypeId, Request? request=null)
         {
 
             string addedQuery = "";
@@ -149,9 +151,18 @@ namespace TimeTable_Project
             {
                 addedQuery = $"UPDATE public.staff SET date_remind = '{DateTime.Now.ToString("yyyy-MM-dd")}' WHERE table_number = {table_number};";
             }
+            string query = "";
 
-            string query = $"UPDATE public.vacations\r\n\tSET cancelled=true\r\n\tWHERE staff_table_number={table_number} and planned=false and cancelled=false and date_start>=Current_Date and date_end<=Current_Date; {addedQuery} INSERT INTO public.vacations(\r\n\tvacation_type_id, staff_table_number, cancelled, planned, date_start, date_end, days)\r\n\tVALUES ({vacationTypeId}, {table_number}, false, false, current_date, current_date, 1) Returning id;";
-            using (var connect = new NpgsqlConnection(Config.SQLConnectionString))
+            if (request == null)
+            {
+                query = $"UPDATE public.vacations SET cancelled=true WHERE staff_table_number={table_number} and planned=false and cancelled=false and date_start>=Current_Date and date_end<=Current_Date; {addedQuery} INSERT INTO public.vacations(\r\n\tvacation_type_id, staff_table_number, cancelled, planned, date_start, date_end, days)\r\n\tVALUES ({vacationTypeId}, {table_number}, false, false, current_date, current_date, 1) Returning id;";
+            }
+            else
+            {
+                query = $"UPDATE public.vacations SET cancelled=true WHERE staff_table_number={table_number} and planned=false and cancelled=false and date_start>=Current_Date and date_end<=Current_Date; {addedQuery} INSERT INTO public.vacations(\r\n\tvacation_type_id, staff_table_number, cancelled, planned, date_start, date_end, days)\r\n\tVALUES ({vacationTypeId}, {table_number}, false, false, '{request.date_start.GetValueOrDefault().ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}', '{request.date_end.GetValueOrDefault().ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}', {request.days_quantity}) Returning id;";
+            
+            }
+                using (var connect = new NpgsqlConnection(Config.SQLConnectionString))
             {
                 var vacation = connect.QueryFirstOrDefault<Vacation>(query);
 

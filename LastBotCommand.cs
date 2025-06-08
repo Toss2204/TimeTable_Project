@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeTable_Project
-{
-    public class LastBotCommand
-    {
-        public Bot_command_types? Type { get; set; }
+namespace TimeTable_Project;
 
-        public DateTime Date { get; set; }
-    }
+public class LastBotCommand
+{
+    public Bot_command_types? Type { get; set; }
+
+    public DateTime Date { get; set; }
 }

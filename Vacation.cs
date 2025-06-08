@@ -16,9 +16,8 @@ namespace TimeTable_Project
         public bool cancelled { get; set; }
         public bool planned { get; set; }
         public DateTime date_start { get; set; }
-        public DateTime date_end { get; set; }       
-        public int days {  get; set; }
-
+        public DateTime date_end { get; set; }
+        public int days { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
 

@@ -6,66 +6,65 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeTable_Project
+namespace TimeTable_Project;
+
+public class Request
 {
-    public class Request
+    public int id { get; set; }
+
+    public DateTime? date { get; set; }
+    public int? staff_table_number { get; set; }
+    public int vacation_type_id { get; set; }
+    public DateTime? date_start { get; set; }
+    public DateTime? date_end { get; set; }
+    public int vacation_base_id { get; set; }       
+    public int days_quantity { get; set; }
+    public StatusRequest status { get; set; }
+
+    public string? Name { get; set; }
+    public string? Surname { get; set; }
+
+    public string? VacationTypeString { get; set; }
+
+    public void UpdateRequest(string textMsg)
     {
-        public int id { get; set; }
+        string textAnswer = textMsg.Replace("/", "");
 
-        public DateTime? date { get; set; }
-        public int? staff_table_number { get; set; }
-        public int vacation_type_id { get; set; }
-        public DateTime? date_start { get; set; }
-        public DateTime? date_end { get; set; }
-        public int vacation_base_id { get; set; }       
-        public int days_quantity { get; set; }
-        public StatusRequest status { get; set; }
+        string query = $"UPDATE public.requests SET status='{textMsg}' WHERE id={id}; Select * From public.requests Where id={id}";
 
-        public string? Name { get; set; }
-        public string? Surname { get; set; }
-
-        public string? VacationTypeString { get; set; }
-
-        public void UpdateRequest(string textMsg)
+        using (var connect = new NpgsqlConnection(Config.SQLConnectionString))
         {
-            string textAnswer = textMsg.Replace("/", "");
+            var upsetRequest = connect.QueryFirstOrDefault<Request>(query);
 
-            string query = $"UPDATE public.requests SET status='{textMsg}' WHERE id={id}; Select * From public.requests Where id={id}";
+            if (upsetRequest != null)
+            { 
+                  
+                if (textMsg == "done") 
+                {
+                    var staffPerson = StaffList.GetStaffPerson($"table_number={upsetRequest.staff_table_number}");
 
-            using (var connect = new NpgsqlConnection(Config.SQLConnectionString))
-            {
-                var upsetRequest = connect.QueryFirstOrDefault<Request>(query);
-
-                if (upsetRequest != null)
-                { 
-                      
-                    if (textMsg == "done") 
+                    if (staffPerson != null)
                     {
-                        var staffPerson = StaffList.GetStaffPerson($"table_number={upsetRequest.staff_table_number}");
+                        var newVacation=staffPerson.UpdateStatus(upsetRequest.vacation_type_id, upsetRequest);
 
-                        if (staffPerson != null)
+                        if (newVacation != null)
                         {
-                            var newVacation=staffPerson.UpdateStatus(upsetRequest.vacation_type_id);
+                            query = $"UPDATE public.requests SET vacation_base_id='{newVacation.id}' WHERE id={id}";
 
-                            if (newVacation != null)
-                            {
-                                query = $"UPDATE public.requests SET vacation_base_id='{newVacation.id}' WHERE id={id}";
- 
-                                connect.Execute(query);
-                                
-                            }
-
+                            connect.Execute(query);
+                            
                         }
 
                     }
 
-                    
-                
                 }
+
+                
+            
             }
-
-
         }
 
+
     }
+
 }
