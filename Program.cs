@@ -6,7 +6,7 @@ namespace TimeTable_Project
 {
     internal class Program
     {
-        public static string timeForNotification = "11:00";
+        public static string timeForNotification = "09:00";
 
         static async Task Main()
         {         

@@ -681,7 +681,7 @@ public class TelegramBOT
                                                             listStaff[0].telegram_id
                                                             ,
                                                             newText, ParseMode.None,
-                                                            message.MessageId, GetKeyboard("Отметка статуса")
+                                                            null, GetKeyboard("Отметка статуса")
                                                             );
                                                         }
                                                     }
@@ -812,14 +812,20 @@ public class TelegramBOT
                                                             newText = $"Вам поступила новая заявка на отпуск от {currentUser.surname} {currentUser.name} ({currentUser.table_number})" +
                                                                 $"\n{createdRequest}" +
                                                                 $"\nПринять или отклонить можно в меню Заявки на согласование";
+
+                                                            requestsList = StaffList.GetRequestsForAgreement();
+                                                            
+
                                                             foreach (var boss in bossList)
                                                             {
 
                                                                 Console.WriteLine(newText);
                                                                 await botClient.SendMessage(
                                                                 boss.telegram_id,
-                                                                newText, ParseMode.None
+                                                                newText, ParseMode.None,null,GetKeyboard("Заявки на согласование")
                                                                 );
+                                                                requestsHolderForAgreement[boss.telegram_id.GetValueOrDefault()]= valueRequest;
+                                                                requestsHolderList[boss.telegram_id.GetValueOrDefault()] = requestsList;
                                                             }
                                                         }
 
@@ -925,7 +931,7 @@ public class TelegramBOT
                             }
 
 
-                            Console.WriteLine($"{user.FirstName} {user.LastName} ({user.Id}) написал сообщение: {message.Text}");
+                            Console.WriteLine($"{DateTime.Now} {user.FirstName} {user.LastName} ({user.Id}) написал сообщение: {message.Text}");
 
                         }
 
