@@ -1531,7 +1531,7 @@ public class TelegramBOT
 
         await botClient.SendMessage(
         message.Chat.Id,
-        textAnswer, ParseMode.Markdown,
+        textAnswer, ParseMode.None,
         message.MessageId, GetKeyboard("Управление сотрудниками")
         );
 
@@ -1555,7 +1555,7 @@ public class TelegramBOT
 
         await botClient.SendMessage(
         message.Chat.Id,
-        textAnswer, ParseMode.Markdown,
+        textAnswer, ParseMode.None,
         message.MessageId, GetKeyboard(message.Text)
         );
 

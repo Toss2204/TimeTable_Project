@@ -26,7 +26,7 @@ namespace TimeTable_Project
         public long? telegram_id { get; set; }
         public bool? reminder_is_necessary { get; set; }
         public DateTime? date_remind { get; set; }
-        public DateTime? Birthday { get; set; }
+        public DateTime? birthday { get; set; }
 
 
         public bool AuthenticationIsComplited() 
